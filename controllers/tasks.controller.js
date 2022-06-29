@@ -1,6 +1,7 @@
 const { User } = require("../models/user.model");
 const { Task } = require("../models/task.model");
 
+const getStatus = ["active", "completed", "late", "cancelled"];
 const createTask = async (req, res) => {
   const { title, limitDate, userId } = req.body;
 
@@ -14,35 +15,28 @@ const getTasksRegistrate = async (req, res) => {
 };
 const getTaskBystatus = async (req, res) => {
   const task = await Task.findAll({
-    include: [{ model: User }],
+    include: User,
   });
 
   res.status(200).json({ task });
 };
 const updateTaskById = async (req, res) => {
-  debugger;
-  const { finishDate } = req.body;
-  const { id } = req.params;
+  const { tasks } = req;
 
-  const task = await Task.findOne({
-    where: { id },
-  });
+  const date = Date.now() - tasks.limitDate;
 
-  task.update({ finishDate });
-
-  res.status(201).json({ task });
-  if (finishDate > limitDate) {
-    task.update({ status: "late" });
+  if (date <= 0) {
+    await tasks.update({ finishDate: Date(), status: "completed" });
   } else {
-    task.update({ status: "completed" });
+    await tasks.update({ finishDate: Date(), status: "late" });
   }
-  console.log(task);
+
+  res.status(201).json({ tasks });
 };
 const cancelTask = async (req, res) => {
-  const { id } = req.body;
-  const task = await Task.findOne({ id });
-  task.update({ status: "cancelled" });
-  res.status(200).json({ task });
+  const { tasks } = req;
+  await tasks.update({ status: "cancelled" });
+  res.status(200).json({ status: "deleted" });
 };
 module.exports = {
   createTask,
