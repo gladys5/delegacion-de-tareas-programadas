@@ -10,7 +10,7 @@ const {
 } = require("../controllers/tasks.controller");
 const { validationDate } = require("../middelwares/validationDate.midellware");
 
-router.post("/", createTask, validationDate);
+router.post("/", createTask);
 router.get("/", getTasksRegistrate);
 router.get("/:status", getTaskBystatus);
 router.patch("/:id", validationDate, updateTaskById);
