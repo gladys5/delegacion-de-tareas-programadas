@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 
 const {
   createTask,
@@ -9,7 +8,7 @@ const {
   cancelTask,
 } = require("../controllers/tasks.controller");
 const { validationDate } = require("../middelwares/validationDate.midellware");
-
+const router = express.Router();
 router.post("/", createTask);
 router.get("/", getTasksRegistrate);
 router.get("/:status", getTaskBystatus);

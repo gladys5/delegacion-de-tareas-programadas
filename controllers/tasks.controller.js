@@ -14,7 +14,9 @@ const getTasksRegistrate = async (req, res) => {
   res.status(200).json({ task });
 };
 const getTaskBystatus = async (req, res) => {
+  const { status } = req.params;
   const task = await Task.findAll({
+    where: { status },
     include: User,
   });
 

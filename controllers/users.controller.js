@@ -1,4 +1,4 @@
-const { bcrypt } = require("bcryptjs");
+//const { bcrypt } = require("bcryptjs");
 const { User } = require("../models/user.model");
 const { catchAsync } = require("../utils/catchAsynck");
 const { Task } = require("../models/task.model");
@@ -33,54 +33,54 @@ const desabiliteUser = async (req, res, next) => {
 
 const createUser = catchAsync(async (req, res, next) => {
   const { name, email, password } = req.body;
-  const salt = await bcrypt.genSalt(12);
-  const hashPassword = await bcrypt.hash(password, salt);
+  //const salt = await bcrypt.genSalt(12);
+  //const hashPassword = await bcrypt.hash(password, salt);
 
   const users = await User.create({
     name,
     email,
-    password: hashPassword,
+    password,
   });
-  users.password = undefined;
+  //users.password = undefined;
   res.status(201).json({
     status: "success",
     users,
   });
 });
 
-const logins = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+// const logins = catchAsync(async (req, res, next) => {
+//   const { email, password } = req.body;
 
-  // Validate credentials (email)
-  const user = await User.findOne({
-    where: {
-      email,
-      status: "active",
-    },
-  });
+//   // Validate credentials (email)
+//   const user = await User.findOne({
+//     where: {
+//       email,
+//       status: "active",
+//     },
+//   });
 
-  if (!user) {
-    return next(new AppError("Email not found", 404));
-  }
+//   if (!user) {
+//     return next(new AppError("Email not found", 404));
+//   }
 
-  // Validate password
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+//   // Validate password
+//   const isPasswordValid = await bcrypt.compare(password, user.password);
 
-  if (!isPasswordValid) {
-    return next(new AppError("Invalid password", 400));
-  }
+//   if (!isPasswordValid) {
+//     return next(new AppError("Invalid password", 400));
+//   }
 
-  // Generate JWT
-  // Send response
-  res.status(200).json({
-    status: "success",
-  });
-});
+//   // Generate JWT
+//   // Send response
+//   res.status(200).json({
+//     status: "success",
+//   });
+// });
 
 module.exports = {
   getUserByStatusActive,
   updateTasks,
-  logins,
+  // logins,
   createUser,
   desabiliteUser,
 };
