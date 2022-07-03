@@ -1,7 +1,6 @@
 const { User } = require("../models/user.model");
 const { Task } = require("../models/task.model");
 
-const getStatus = ["active", "completed", "late", "cancelled"];
 const createTask = async (req, res) => {
   const { title, limitDate, userId } = req.body;
 
